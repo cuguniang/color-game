@@ -159,7 +159,8 @@ function draw_Rect(step, n) {
 		}
 
 		if (NOW == 0) {
-			canvas.removeEventListener("Click", onCanvasClick);
+			canvas.removeEventListener("click", onCanvasClick);
+			canvas.addEventListener("click",onclick);
 			gameover();
 		}
 
@@ -177,10 +178,16 @@ function gameover() {
 
 }
 //3. 事件注册块...........................................................
+function onclick(){
+	iBlock = 2;
+	clearInterval(ID);
+	canvas.addEventListener("click", onCanvasClick);
+	draw_Rect(STEP,iBlock);
+}
 function onRestart(){
 	clearInterval(ID);
 	iBlock = 2;
-	canvas.addEventListener("Click", onCanvasClick);
+	canvas.addEventListener("click", onCanvasClick);
 	draw_Rect(STEP, iBlock);
 }
 function onCanvasClick(event) {
