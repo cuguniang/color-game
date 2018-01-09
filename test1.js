@@ -159,6 +159,7 @@ function draw_Rect(step, n) {
 		}
 
 		if (NOW == 0) {
+			canvas.removeEventListener("Click", onCanvasClick);
 			gameover();
 		}
 
@@ -173,7 +174,6 @@ function gameover() {
 	ctx.fillText(text.textc, text.x, text.y);
 	ctx.restore();
 	clearInterval(ID);
-	canvas.removeEventListener("Click", onCanvasClick);
 
 }
 //3. 事件注册块...........................................................
