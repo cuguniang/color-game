@@ -81,7 +81,7 @@ function Coordinate(canvas,point) {
 
 function drawG() {
 	ctx.save();
-	ctx.font = "150px arial";
+	ctx.font = "180px arial";
 	ctx.fillText("第 "+ (iBlock-1) + " 关",canvas.width/2,canvas.height/10);
 	// ctx.fillText("第",MARGIN*15,MARGIN*50);
 	// ctx.fillText((iBlock-1),MARGIN*15,MARGIN*70);
