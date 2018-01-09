@@ -3,24 +3,32 @@
 	Author    :醋姑娘
  */
 
-
 //1. 公共变量声明块........................................................
 
 var canvas = document.getElementById("canvas"),
 	ctx = canvas.getContext("2d");
-//倒计时30
-var TIME  = 30;
+
+var Rcode = new Image();
+Rcode.src = "Rcode.png";
+
+var circle = new Image();
+circle.src = "circle.png";
+
+var TIME  = 15;
+
 var NOW = TIME;
-const BIGRECT_WIDTH = 500,
-	  BIGRECT_HEIGHT = 500;
+
+const BIGRECT_WIDTH = 700,
+	  BIGRECT_HEIGHT = 700;
 
 var bigRect = {
 	x: canvas.width / 2 - BIGRECT_WIDTH / 2,
-	y: canvas.height / 2 - BIGRECT_HEIGHT / 2,
+	y: canvas.height / 2 - BIGRECT_HEIGHT / 1.3,
 	w: BIGRECT_WIDTH,
 	h: BIGRECT_HEIGHT
 };
-var MAGIN = 5,
+
+var MARGIN = 5,
 	STEP = 80;
 
 var rightDIRECTION = {
@@ -29,14 +37,12 @@ var rightDIRECTION = {
 	x2: 0,
 	y2: 0
 };
-var style = {
-	font: "80px arial",
-	textalign: "center",
-	textbaseline: "middle",
-	fillstyle: "black"
+var countDown = {
+	x:canvas.width/5,
+	y:canvas.height/1.7
 };
 var text = {
-	textc: "你还喜欢紫色吗!?",
+	textc: "Game over!",
 	x: canvas.width / 2,
 	y: canvas.height / 2
 };
@@ -45,8 +51,9 @@ var iBlock = 2;
 //2. 函数定义块...........................................................
 function addName() {
 	ctx.save();
-	ctx.font = "20px 华文新魏";
-	ctx.fillText("code by 醋姑娘",MAGIN*15,canvas.height - MAGIN*10);
+	ctx.font = "50px fantasy,arial";
+	ctx.fillText("code by 醋姑娘",canvas.width*0.6,canvas.height*19/20);
+	ctx.drawImage(Rcode,canvas.width/5,canvas.height*9/10,100,100);
 	ctx.restore();
 }
 function Coordinate(canvas,point) {
@@ -70,26 +77,32 @@ function Coordinate(canvas,point) {
 	point.y *= yRatio;
 	
 	return point;
-		
 }
 
 function drawG() {
-
-	ctx.fillText("第",MAGIN*15,MAGIN*50);
-	ctx.fillText((iBlock-1),MAGIN*15,MAGIN*70);
-	ctx.fillText("关",MAGIN*15,MAGIN*90);
+	ctx.save();
+	ctx.font = "150px arial";
+	ctx.fillText("第 "+ (iBlock-1) + " 关",canvas.width/2,canvas.height/10);
+	// ctx.fillText("第",MARGIN*15,MARGIN*50);
+	// ctx.fillText((iBlock-1),MARGIN*15,MARGIN*70);
+	// ctx.fillText("关",MARGIN*15,MARGIN*90);
+	ctx.restore();
 }
+// function drawClock(){
+// 	ctx.drawImage(circle,countDown.x,countDown.y);
+// }
 function draw_Rect(step, n) {
 	
 	addName();
-	//250 - 280 main in purple
 	var h = parseInt(Math.random() * 360);
-	var l = 80,
+	var l = 75+Math.random()*20,
 		s = 100;
-	var basicColor = "hsl(" + h + "," + s + "%," + l + "%)";
-	var difColor = "hsl(" + h + "," + (s - step) + "%," + l + "%)";
 
-	var side = (BIGRECT_WIDTH - (n + 1) * MAGIN) / n;
+	var basicColor = "hsl(" + h + "," + s + "%," + l + "%)";
+	// var difColor = "hsl(" + h + "," + (s - step) + "%," + l + "%)";
+	var difColor = "hsl(" + (h - 15 + Math.random()*15) + "," + (s - 10 - Math.random()*(step-10)) + "%," + l + "%)";
+
+	var side = (BIGRECT_WIDTH - (n + 1) * MARGIN) / n;
 	var ci = parseInt(Math.random() * n),
 		cj = parseInt(Math.random() * n);
 
@@ -106,31 +119,32 @@ function draw_Rect(step, n) {
 				//随机生成游戏出口的位置
 				//alert("第"+(cj+1)+"行，"+"第"+(ci+1)+"列");
 				ctx.fillStyle = difColor;
-				rightDIRECTION.x1 = bigRect.x + side * i + MAGIN * (i + 1);
+				rightDIRECTION.x1 = bigRect.x + side * i + MARGIN * (i + 1);
 				rightDIRECTION.x2 = rightDIRECTION.x1 + side;
-				rightDIRECTION.y1 = bigRect.y + side * j + MAGIN * (j + 1);
+				rightDIRECTION.y1 = bigRect.y + side * j + MARGIN * (j + 1);
 				rightDIRECTION.y2 = rightDIRECTION.y1 + side;
 			} else {
 				ctx.fillStyle = basicColor;
 			}
-			ctx.fillRect(bigRect.x + side * i + MAGIN * (i + 1), bigRect.y + side * j + MAGIN * (j + 1), side, side);
+			ctx.fillRect(bigRect.x + side * i + MARGIN * (i + 1), bigRect.y + side * j + MARGIN * (j + 1), side, side);
 
 		}
 	}
 
 	NOW = TIME;
-	ctx.arc(MAGIN*15, MAGIN*20, 70, 0, Math.PI*2);
-	ctx.stroke();
-	ctx.fillText(NOW, MAGIN * 15, MAGIN * 20);
+	ctx.font = "150px arial";
+	// ctx.arc(canvas.width/2, canvas.height/1.35, 120, 0, Math.PI*2);
+	// ctx.stroke();
+	ctx.fillText(NOW, canvas.width/2, canvas.height/1.3);
 	drawG();
 	//30s没有找出答案就结束游戏 呈现一个倒计时的效果
 	ID = setInterval(function() {
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		addName();
 		ctx.strokeRect(bigRect.x, bigRect.y, bigRect.w, bigRect.h);
-		ctx.arc(MAGIN*15, MAGIN*20, 70, 0, Math.PI*2);
-		ctx.stroke();
-		ctx.fillText(--NOW, MAGIN * 15, MAGIN * 20);
+		// ctx.arc(canvas.width/2, canvas.height/1.35, 120, 0, Math.PI*2);
+		// ctx.stroke();
+		ctx.fillText(--NOW, canvas.width/2, canvas.height/1.3);
 		drawG();
 		for (i = 0; i < n; i++) {
 			for (j = 0; j < n; j++) {
@@ -139,7 +153,7 @@ function draw_Rect(step, n) {
 				} else {
 					ctx.fillStyle = basicColor;
 				}
-				ctx.fillRect(bigRect.x + side * i + MAGIN * (i + 1), bigRect.y + side * j + MAGIN * (j + 1), side, side);
+				ctx.fillRect(bigRect.x + side * i + MARGIN * (i + 1), bigRect.y + side * j + MARGIN * (j + 1), side, side);
 
 			}
 		}
@@ -153,10 +167,11 @@ function draw_Rect(step, n) {
 }
 
 function gameover() {
-	//gameover后还能继续点方块 需改进
-	//已改进！————停止倒计时，并移除鼠标点击事件的监听器
+	ctx.save();
+	ctx.font = "80px fantasy";
 	ctx.fillStyle = "black";
 	ctx.fillText(text.textc, text.x, text.y);
+	ctx.restore();
 	clearInterval(ID);
 	canvas.removeEventListener("Click", onCanvasClick);
 
@@ -188,7 +203,8 @@ function change() {
 
 canvas.addEventListener("click", onCanvasClick);
 //4. 初始化块............................................................
-ctx.textAlign = style.textalign;
-ctx.textBaseline = style.textbaseline;
-ctx.font = style.font;
-draw_Rect(STEP, iBlock);//第一关是2*2的小方块
+Rcode.onload = function(){
+	ctx.textbaseline = "middle";
+	ctx.textAlign = "center";
+	draw_Rect(STEP, iBlock);//第一关是2*2的小方块
+}
