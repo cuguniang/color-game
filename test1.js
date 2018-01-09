@@ -198,8 +198,9 @@ function onCanvasClick(event) {
 
 		if (now.x >= rightDIRECTION.x1 && now.x <= rightDIRECTION.x2 && now.y >= rightDIRECTION.y1 && now.y <= rightDIRECTION.y2) {
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
-			collision.load();
-			collision.play();
+		collision.load();
+		collision.play();
+			console.log("1");
 		clearInterval(ID);
 		draw_Rect(STEP - iBlock, ++iBlock);
 		
