@@ -182,6 +182,7 @@ function onclick(){
 	iBlock = 2;
 	clearInterval(ID);
 	canvas.addEventListener("click", onCanvasClick);
+	canvas.removeEventListener("click",onclick);
 	draw_Rect(STEP,iBlock);
 }
 function onRestart(){
